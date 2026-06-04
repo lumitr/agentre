@@ -32,5 +32,6 @@ func migrationList() []*gormigrate.Migration {
 		migration202605220009(), // server_state + paired_agentreds
 		migration202605220010(), // projects.sort_order
 		migration202606040001(), // agent_memories
+		migration202606040002(), // agent_tools
 	}
 }
