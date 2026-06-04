@@ -197,4 +197,5 @@ var zhCN = map[int]string{
 	AgentMemoryInvalidCategory: "记忆类别不合法",
 	AgentMemoryEmptyContent:    "记忆内容不能为空",
 	AgentMemorySessionRequired: "session 作用域必须指定会话 ID",
+	AgentMemoryInvalidSource:   "记忆来源不合法",
 }

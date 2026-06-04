@@ -261,4 +261,5 @@ const (
 	AgentMemoryInvalidCategory                // 记忆类别不合法
 	AgentMemoryEmptyContent                   // 记忆内容不能为空
 	AgentMemorySessionRequired                // session 作用域必须指定 session_id
+	AgentMemoryInvalidSource                  // 记忆来源不合法
 )

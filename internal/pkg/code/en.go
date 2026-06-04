@@ -197,4 +197,5 @@ var enUS = map[int]string{
 	AgentMemoryInvalidCategory: "Invalid memory category",
 	AgentMemoryEmptyContent:    "Memory content cannot be empty",
 	AgentMemorySessionRequired: "Session scope requires a session ID",
+	AgentMemoryInvalidSource:   "Invalid memory source",
 }

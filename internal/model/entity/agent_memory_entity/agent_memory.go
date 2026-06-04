@@ -51,6 +51,11 @@ var validCategories = map[Category]bool{
 	CategoryCustom:     true,
 }
 
+var validSources = map[Source]bool{
+	SourceAuto:   true,
+	SourceManual: true,
+}
+
 // AgentMemory 一条 Agent 记忆记录。
 type AgentMemory struct {
 	ID         int64  `gorm:"column:id;primaryKey;autoIncrement"`
@@ -83,6 +88,9 @@ func (a *AgentMemory) Check(ctx context.Context) error {
 	}
 	if !validCategories[Category(a.Category)] {
 		return i18n.NewError(ctx, code.AgentMemoryInvalidCategory)
+	}
+	if !validSources[Source(a.Source)] {
+		return i18n.NewError(ctx, code.AgentMemoryInvalidSource)
 	}
 	if strings.TrimSpace(a.Content) == "" {
 		return i18n.NewError(ctx, code.AgentMemoryEmptyContent)
