@@ -22,6 +22,7 @@ import (
 	"agentre/internal/pkg/agentprovider"
 	"agentre/internal/pkg/agentruntime"
 	"agentre/internal/pkg/agentruntime/capability"
+	"agentre/internal/service/agent_memory_svc"
 )
 
 var defaultRuntime = New()
@@ -201,8 +202,23 @@ func (r *Runtime) Run(ctx context.Context, req agentruntime.RunRequest) (<-chan 
 		}
 	}
 
+	// 加载 Agent 记忆并注入 system prompt
+	sys := strings.TrimSpace(req.SystemPrompt)
+	memories, memErr := agent_memory_svc.AgentMemory().LoadMemories(ctx, req.AgentID, "", 0)
+	if memErr != nil {
+		logger.Ctx(ctx).Warn("builtin runtime: load memories failed", zap.Error(memErr))
+	}
+	if len(memories) > 0 {
+		var memSB strings.Builder
+		memSB.WriteString("\n\n[Agent Memories]\n")
+		for _, m := range memories {
+			memSB.WriteString(fmt.Sprintf("- [%s/%s] %s\n", m.Scope, m.Category, m.Content))
+		}
+		sys = sys + memSB.String()
+	}
+
 	opts := []coding.Option{}
-	if sys := strings.TrimSpace(req.SystemPrompt); sys != "" {
+	if sys != "" {
 		opts = append(opts, coding.AppendSystem(sys))
 	}
 	if model := strings.TrimSpace(req.Provider.Model); model != "" {
