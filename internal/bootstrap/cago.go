@@ -15,6 +15,7 @@ import (
 	"agentre/internal/repository/agent_backend_repo"
 	"agentre/internal/repository/agent_memory_repo"
 	"agentre/internal/repository/agent_repo"
+	"agentre/internal/repository/agent_tool_repo"
 	"agentre/internal/repository/app_setting_repo"
 	"agentre/internal/repository/chat_repo"
 	"agentre/internal/repository/department_repo"
@@ -92,6 +93,7 @@ func Init(ctx context.Context) (*Runtime, error) {
 	department_repo.RegisterDepartment(department_repo.NewDepartment())
 	agent_repo.RegisterAgent(agent_repo.NewAgent())
 	agent_memory_repo.RegisterAgentMemory(agent_memory_repo.NewAgentMemory())
+	agent_tool_repo.RegisterAgentTool(agent_tool_repo.NewAgentTool())
 	hook_repo.RegisterHookSource(hook_repo.NewHookSource())
 	hook_repo.RegisterHookRule(hook_repo.NewHookRule())
 	hook_repo.RegisterHookEvent(hook_repo.NewHookEvent())
