@@ -50,6 +50,7 @@ import (
 	"agentre/internal/repository/chat_repo"
 	"agentre/internal/repository/llm_provider_repo"
 	"agentre/internal/repository/project_repo"
+	"agentre/internal/service/agent_memory_svc"
 	chatblocks "agentre/internal/service/chat_svc/blocks"
 	"agentre/internal/service/chat_svc/handlers"
 	"agentre/internal/service/chat_svc/turn"
@@ -2474,6 +2475,13 @@ func (s *chatSvc) runTurn(
 	// abort 路径：跳过自动接续，让用户自己决定要不要再发。
 	var pending []agentruntime.ConsumedSteer
 	if stopErr == nil && !aborted {
+		// turn 正常结束后，异步触发记忆提取
+		go func() {
+			if err := agent_memory_svc.AgentMemory().ExtractFromSession(context.Background(), sess.ID); err != nil {
+				logger.Ctx(ctx).Warn("agent_memory: extract from session failed",
+					zap.Int64("sessionID", sess.ID), zap.Error(err))
+			}
+		}()
 		if drainer, ok := runner.(agentruntime.SteerDrainer); ok {
 			pending = nonEmptyConsumedSteers(drainer.DrainPending(finalCtx, sess.ID))
 		}
