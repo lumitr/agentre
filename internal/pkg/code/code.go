@@ -263,3 +263,11 @@ const (
 	AgentMemorySessionRequired                // session 作用域必须指定 session_id
 	AgentMemoryInvalidSource                  // 记忆来源不合法
 )
+
+// Agent 工具 20900~20999
+const (
+	AgentToolNotFound              = iota + 20900 // Agent 工具不存在
+	AgentToolInvalidExecutorType                  // 工具执行器类型不合法
+	AgentToolInvalidParamSchema                   // 工具参数 schema JSON 不合法
+	AgentToolInvalidExecutorConf                  // 工具执行器配置 JSON 不合法
+)

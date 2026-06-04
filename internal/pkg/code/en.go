@@ -198,4 +198,10 @@ var enUS = map[int]string{
 	AgentMemoryEmptyContent:    "Memory content cannot be empty",
 	AgentMemorySessionRequired: "Session scope requires a session ID",
 	AgentMemoryInvalidSource:   "Invalid memory source",
+
+	// Agent Tool
+	AgentToolNotFound:              "Agent tool not found",
+	AgentToolInvalidExecutorType:   "Invalid tool executor type",
+	AgentToolInvalidParamSchema:    "Invalid tool parameter schema JSON",
+	AgentToolInvalidExecutorConf:   "Invalid tool executor configuration JSON",
 }

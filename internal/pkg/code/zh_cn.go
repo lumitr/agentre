@@ -198,4 +198,10 @@ var zhCN = map[int]string{
 	AgentMemoryEmptyContent:    "记忆内容不能为空",
 	AgentMemorySessionRequired: "session 作用域必须指定会话 ID",
 	AgentMemoryInvalidSource:   "记忆来源不合法",
+
+	// Agent 工具
+	AgentToolNotFound:              "Agent 工具不存在",
+	AgentToolInvalidExecutorType:   "工具执行器类型不合法",
+	AgentToolInvalidParamSchema:    "工具参数 schema 格式不合法",
+	AgentToolInvalidExecutorConf:   "工具执行器配置格式不合法",
 }
