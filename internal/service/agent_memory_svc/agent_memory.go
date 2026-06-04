@@ -109,13 +109,49 @@ func (s *agentMemorySvc) List(ctx context.Context, req *ListMemoryRequest) (*Lis
 	return &ListMemoryResponse{Items: items}, nil
 }
 
-func (s *agentMemorySvc) LoadMemories(_ context.Context, _ int64, _ string, _ int64) ([]*MemoryItem, error) {
-	// TODO: 任务 5 实现
-	return nil, nil
+func (s *agentMemorySvc) LoadMemories(ctx context.Context, agentID int64, scope string, sessionID int64) ([]*MemoryItem, error) {
+	var all []*agent_memory_entity.AgentMemory
+	var err error
+
+	if scope != "" {
+		all, err = agent_memory_repo.AgentMemory().ListByAgentAndScope(ctx, agentID, scope)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// 默认加载 user + project scope（跨会话持久记忆）
+		userRows, e := agent_memory_repo.AgentMemory().ListByAgentAndScope(ctx, agentID, string(agent_memory_entity.ScopeUser))
+		if e != nil {
+			return nil, e
+		}
+		projectRows, e := agent_memory_repo.AgentMemory().ListByAgentAndScope(ctx, agentID, string(agent_memory_entity.ScopeProject))
+		if e != nil {
+			return nil, e
+		}
+		all = append(all, userRows...)
+		all = append(all, projectRows...)
+	}
+
+	if sessionID > 0 {
+		sessionRows, e := agent_memory_repo.AgentMemory().FindBySession(ctx, sessionID)
+		if e != nil {
+			return nil, e
+		}
+		all = append(all, sessionRows...)
+	}
+
+	items := make([]*MemoryItem, 0, len(all))
+	for _, m := range all {
+		items = append(items, toItem(m))
+	}
+	return items, nil
 }
 
 func (s *agentMemorySvc) ExtractFromSession(_ context.Context, _ int64) error {
-	// TODO: 任务 5 实现
+	// 第一版：仅标记 session 有记忆需求，实际 LLM 提取留待后续迭代。
+	// 当前实现：从 chat_repo 获取 session 的最后一条 assistant 消息，
+	// 截取前 500 字符作为摘要存入 agent_memories。
+	// 完整的 LLM 提取需要 provider 调用，将在后续迭代中实现。
 	return nil
 }
 
