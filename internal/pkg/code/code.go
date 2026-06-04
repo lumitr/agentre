@@ -253,3 +253,12 @@ const (
 	DataImportRollback                          // 导入失败,所有改动已回滚
 	DataImportInvalidAction                     // 未知的导入 action
 )
+
+// Agent 记忆 20800~20899
+const (
+	AgentMemoryNotFound        = iota + 20800 // Agent 记忆不存在
+	AgentMemoryInvalidScope                   // 记忆作用域不合法
+	AgentMemoryInvalidCategory                // 记忆类别不合法
+	AgentMemoryEmptyContent                   // 记忆内容不能为空
+	AgentMemorySessionRequired                // session 作用域必须指定 session_id
+)

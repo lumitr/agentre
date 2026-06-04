@@ -190,4 +190,11 @@ var enUS = map[int]string{
 	DataImportDuplicateLocal:     "Multiple local records share the same name, cannot auto-overwrite",
 	DataImportRollback:           "Import failed, all changes rolled back",
 	DataImportInvalidAction:      "Unknown import action",
+
+	// Agent Memory
+	AgentMemoryNotFound:        "Agent memory not found",
+	AgentMemoryInvalidScope:    "Invalid memory scope",
+	AgentMemoryInvalidCategory: "Invalid memory category",
+	AgentMemoryEmptyContent:    "Memory content cannot be empty",
+	AgentMemorySessionRequired: "Session scope requires a session ID",
 }
