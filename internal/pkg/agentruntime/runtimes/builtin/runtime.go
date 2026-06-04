@@ -22,6 +22,7 @@ import (
 	"agentre/internal/pkg/agentprovider"
 	"agentre/internal/pkg/agentruntime"
 	"agentre/internal/pkg/agentruntime/capability"
+	"agentre/internal/pkg/agentruntime/toolext"
 	"agentre/internal/service/agent_memory_svc"
 )
 
@@ -215,6 +216,15 @@ func (r *Runtime) Run(ctx context.Context, req agentruntime.RunRequest) (<-chan 
 			memSB.WriteString(fmt.Sprintf("- [%s/%s] %s\n", m.Scope, m.Category, m.Content))
 		}
 		sys = sys + memSB.String()
+	}
+
+	// 加载工具定义
+	toolDefs, toolErr := toolext.LoadTools(ctx, req.AgentID)
+	if toolErr != nil {
+		logger.Ctx(ctx).Warn("builtin runtime: load tools failed", zap.Error(toolErr))
+	}
+	if len(toolDefs) > 0 {
+		sys = sys + toolext.FormatToolsPrompt(toolDefs)
 	}
 
 	opts := []coding.Option{}
